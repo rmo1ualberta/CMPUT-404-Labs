@@ -3,6 +3,8 @@ import sys
 # based on example code from python docs: https://docs.python.org/3/library/socket.html#socket.socket.connect
 port = int(sys.argv[1])      # port specified in args
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+# reuse addresses
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(('',port))
 sock.listen(1)
 conn, addr = sock.accept()
