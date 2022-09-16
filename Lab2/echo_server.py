@@ -34,10 +34,10 @@ def main():
 def childRecvAndSend(conn):
 
     #recieve data, wait a bit, then send it back
-    full_data = conn.recv(BUFFER_SIZE)
-    print(full_data)
+    fullData = conn.recv(BUFFER_SIZE)
+    print(fullData)
     time.sleep(0.5)
-    conn.sendall(full_data)
+    conn.sendall(fullData)
     conn.close()
 
 if __name__ == "__main__":
