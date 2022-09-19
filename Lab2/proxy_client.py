@@ -1,21 +1,40 @@
 import socket,sys
 
 host = '127.0.0.1'
-port = int(sys.argv[1])      # port specified in args
+port = 8001
 buff = 1024
+target_host = "www.google.com"
 
-# first socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.connect((host, port))
-sock.sendall(b"Bruh")
 
-full_data = b""
-while True:
-    data = sock.recv(buff)
-    if not data:
-        break
-    full_data += data
-print('Received data: \n')
-print(full_data)
+def main():
 
-sock.close()
+    # connect to host socket
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((host, port))
+    except socket.error as e:
+        print("ERROR: failed to establish socket to host. %s" % e)
+
+    req = f"GET / HTTP/1.1\r\nHost: %s\r\n\r\n" % target_host
+    send_payload(sock, req)
+
+    # receive and print the data
+    full_data = b""
+    while True:
+        data = sock.recv(buff)
+        if not data:
+            break
+        full_data += data
+    print('Received data: \n' + full_data)
+
+    sock.close()
+
+def send_payload(s, payload):
+    try:
+        s.sendall(payload.encode())
+    except socket.error:
+        print("Error: sending payload failed", file=sys.stderr)
+        sys.exit()
+
+if __name__ == "__main__":
+    main()
