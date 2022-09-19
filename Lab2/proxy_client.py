@@ -16,8 +16,10 @@ def main():
     except socket.error as e:
         print("ERROR: failed to establish socket to host. %s" % e)
 
+    # send payload and shutdown
     req = f"GET / HTTP/1.0\r\nHost: %s\r\n\r\n" % target_host
     send_payload(sock, req)
+    sock.shutdown(socket.SHUT_WR)
 
     # receive and print the data
     full_data = b""

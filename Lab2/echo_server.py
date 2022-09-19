@@ -24,7 +24,6 @@ def main():
             conn, addr = s.accept()
             print("Connected by", addr)
             
-
             childProcess = Process(target=childRecvAndSend, args=[conn])
             childProcess.daemon = True
             childProcess.start()
