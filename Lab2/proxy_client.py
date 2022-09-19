@@ -21,11 +21,14 @@ def main():
 
     # receive and print the data
     full_data = b""
-    while True:
-        data = sock.recv(buff)
-        if not data:
-            break
-        full_data += data
+    try:
+        while True:
+            data = sock.recv(buff)
+            if not data:
+                break
+            full_data += data
+    except socket.error as e:
+        print("ERROR: failed to receive data from host. %s" % e)
     print(full_data)
 
     sock.close()

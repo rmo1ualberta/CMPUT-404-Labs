@@ -67,7 +67,6 @@ def childRecvAndSend(conn):
         print('ERROR: failed to receive data from target host. %s' % e )
         sys.exit(1)
 
-    print(fullDataGoogle)
 
     # send data received from google back to our client
     try:
