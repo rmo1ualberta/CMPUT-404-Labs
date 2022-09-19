@@ -26,7 +26,8 @@ def main():
         childProcess.daemon = True
         childProcess.start()
 
-        # conn.close()
+        conn.close()
+
 
 def childRecvAndSend(conn):
 
@@ -49,7 +50,7 @@ def childRecvAndSend(conn):
 
     # now we send the data received from the client to google and then receive it
     try:
-        sockGoogle.sendall(b"Bruh")
+        sockGoogle.sendall(fullDataClient)
     except socket.error as e:
         print('ERROR: failed to send client data to target host. %s' % e)
         sys.exit(1)
@@ -75,8 +76,7 @@ def childRecvAndSend(conn):
         print('ERROR: failed to send target host data to client. %s' %e)
         sys.exit(1)
 
-    # conn.close()
-    # sockGoogle.close()
+    sockGoogle.close()
 
 
 

@@ -12,10 +12,11 @@ def main():
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((host, port))
+        print("Connected to %s" %host)
     except socket.error as e:
         print("ERROR: failed to establish socket to host. %s" % e)
 
-    req = f"GET / HTTP/1.1\r\nHost: %s\r\n\r\n" % target_host
+    req = f"GET / HTTP/1.0\r\nHost: %s\r\n\r\n" % target_host
     send_payload(sock, req)
 
     # receive and print the data
@@ -25,7 +26,7 @@ def main():
         if not data:
             break
         full_data += data
-    print('Received data: \n' + full_data)
+    print(full_data)
 
     sock.close()
 
