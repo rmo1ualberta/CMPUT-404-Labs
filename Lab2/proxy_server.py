@@ -51,6 +51,7 @@ def childRecvAndSend(conn):
     # now we send the data received from the client to google and then receive it
     try:
         sockGoogle.sendall(fullDataClient)
+        sockGoogle.shutdown(socket.SHUT_WR)
     except socket.error as e:
         print('ERROR: failed to send client data to target host. %s' % e)
         sys.exit(1)
