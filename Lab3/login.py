@@ -8,12 +8,14 @@ import os
 from http.cookies import SimpleCookie
 
 def main():
+    # init headers, body
+    headers = []
+    body = ''
+
     # setting up cgi form
     form = cgi.FieldStorage()
     username = form.getfirst("username")
     password = form.getfirst("password")
-
-
 
     # setting up cookie
     cookie = SimpleCookie(os.environ["HTTP_COOKIE"])
@@ -31,22 +33,26 @@ def main():
         username = cookie_username
         password = cookie_password
 
-    print("Content-type: text/html")
+    # create headers
+    headers.append("Content-type: text/html")
     # if login is correct, set the cookie login info
     if form_ok(username, password):
-        print(f"Set-Cookie: username={username}")
-        print(f"Set-Cookie: password={password}")
-
-    print()
+        headers.append(f"Set-Cookie: username={username}")
+        headers.append(f"Set-Cookie: password={password}")
     
     # load html pages according to the situation
     if not username and not password:
-        print(login_page())
+        body = login_page()
     elif form_ok(username, password):
-        print(secret_page(username, password))
+        body = secret_page(username, password)
     else:
-        print(after_login_incorrect())
-        print(f"username & password: {username} {password}")
+        body = after_login_incorrect()
+        # print(f"username & password: {username} {password}")
+
+    # essentially we're printing out a HTTP response message
+    print('\r\n'.join(headers))
+    print()
+    print(body)
 
 def form_ok(username, password):
     # check if the login info provided by user is correct
